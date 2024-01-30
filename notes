@@ -1,0 +1,171 @@
+"https://www.youtube.com/watch?v=3qlnR9hK-lQ"
+
+1.  Create folder => sequelize
+2.  Ensure connecttion to database (MariaBD).
+3.  Create entry file app.js
+4.  Run npm init -y.
+5.  npm install sequelize and mariadb and mysql2 from terminal
+6.  To create connection we will use <sequelize_cli>
+7.  npm install -g sequelize-cli
+8.  run sequelize init command to initilaize sequelize in our project and create a bunch of stuff:
+
+        1. config.json => holds a couple of base connections ie development, production and test
+        2. You should populate password and username. You can also create the database as well so we create "sequelize_test"
+        3. The models folder already has "index.js" file for creating sequelize instance and imports the databse models
+
+9.  Remove last line of index.js
+10. create database from sequelize-cli. Typing sequelize shows all command
+11. run command sequelize db:create to create the database that is shown in the config
+12. To create table in databse eg users table with name, role and email
+13. Use sequelize cli to create model with the following commands."sequelize model:generate --name User -- attributes name:string, email:string, role:string (avoid spaces)
+14. We go to app.js to import the sequelize connection and create the table (with sync)
+15. Make the attributes: name, email and role non-nullable
+16. Go to user.js (model) and add option tableName to ensure correct table names and also edit the type by adding an object and allowNull
+17. install express
+18. Create route for user
+19. Add another attribute to the user => uuid. This ensures the public does not know the number of users that we have.
+20. Go to the user model and add the attribute uuid
+21. The new attribute will be added; however, the user is deleted. Each time we sync the databse the user is deleted. Therefore, instead of using <sync> we will use <migrations>. We will use migration to create the table instead of syncing.
+22. In migrations create-user file, change the names from uppercase User to lowercase User.
+23. Chaneg the type from Sequelize to DataTypes.
+24. Go to the terminal and drop the database with sequelize db:drop command
+25. Recreate DB with "sequelize db:create<do!!>
+26. In app.js replace sequelize sync with sequelize authenticate
+27. To create tables run the migration => "sequelize db:migrate <do!!>
+28. Run "nodemon app.js"
+29. Run create user in Postman/Thunder Client
+30. To hide the id from users, go to User model. Override the toJSON method
+
+######
+
+30. Create another DB model called <posts>
+31. Use sequelize cli to create model with the following commands."sequelize model:generate --name Post -- attributes body:string
+32. Update model file to include UUID and ensure variables are not null
+33. Go to migration file for post and update the DataTypes and add uuid. Change post to lowe case
+34. run sequelize db:migrate:status to determine the status
+35. Run sequelize db:migrate
+
+#####
+
+36. Include id of user in the post because every post must have a user. Every post belongs to the user and the user can have a lot of posts. <association>
+37. Go to the Post model
+38. Destructure user model
+39. Sequelize will look for id of UserId but we need "userId" so we need to override the belongsTo function.
+40. Create association in User model as well.
+41. Add this to migration as well.
+42. Re-run the migration => "sequelize db:migrate:undo"
+43. Re-migrate
+44. run desc posts in MariaDB
+45. Create an end point to create a post
+46. To change User to lower case in the output when we try to read all posts with users included. Go to the Post model and redefine the association
+
+### Validation
+
+1. Need validation to avoid creating empty posts
+2. Add validation to user model.
+
+## seed
+
+1. Drop table with truncate command
+2. Update seed file with more data.
+3. run the command: sequelize db:seed:all
+4. sequelize seed:generate --name add-currencies
+
+###################################################################################
+
+[Saving banner images]
+1. Create the HTML to upload an images
+2. Clicking on the button, one is able to select an images. This is from the web perspectibve
+where you can get images with input tag
+3. create a function called preview(). Check if the file is an image or not. Access the first 
+type. Check if mimetype macthes that of an image.
+4. To send the data to the backend, we can use form data in postman.
+5. For getting the data in the backend we use [multer]
+6. Set it up in the backend. Setup the uploads to be in the src folder. Set up a file filter
+function as well.
+7. Create the banner model
+8. Add default for date => new Date()
+9. Add multer to the banner  router. 
+10. In the fron end you can create a formData new FormData()
+11. The file needs to be converetd to a blob
+12. We can convert the file to base 64 before sending to the bacxkend
+13. We need to wrap tje image tag into ion thumbnail
+12. After the data is prepared
+13. Create a Banner service  to send with API to the backend.
+14. The blob is not needwd
+15. Include global service as well
+16. Create getter form banner services
+
+###########################################################################
+
+[Authentication]
+1. Two folders: Backend and Frontend
+2. The Backend is NodeJS code. The front end is Angular.
+
+3. [What is user authentication]: The goal is not just to login but being able to identify 
+a person. You want to be sure the person entering your web site is who they say they are.
+There are different ways of achieving user authentication. The typical way is username and 
+password. email addresss and password are the popular ways of logging in.
+
+4. The type we will look at is the {token based authentication}. If I have a route in the 
+backend and we only want logged in users to access the route. When they log in they receive a 
+token and for every subsequent log in, you get the token.
+
+5. There is a users table with email, password, firstname and file name of image.
+6. The password has been encrypted.
+7. The id is primary key and the email is unique. So two users will not have the same email addresses.
+8. There is a transactions table which has some sameple data. The transactions were created 
+by different users. Only protected people can acceess. You have to be logged in to be 
+able to see your transaction data.
+9. If I try to get all transactions without a token (not logged), I receive access denied
+{status_code 401 Unauthorized}.
+10. There is a register route that can be used to create an account. 
+11. After registering the new user. There will be an encrypted password. 
+12. To login, I will use the same email address, with the password of secret. and click on 
+send. After logging in, a token will be generated. 
+13. The token will then be copied and be used for transactions like, it will be 
+successful.
+
+[Code]
+1. Package.json: bcrypt (converts password to hash password/encrypted passwords), jswonwebtoken (generates the token)
+2. There is an auth_route for register nad login
+3. Transaction has the other routes
+4. Models were created fro users and transactions
+5. There is config.js
+
+[Index.js]
+1. express is imported
+2. The routes (auth and transaction routes)
+3. We need the json and urlencoded middlewares.
+
+[Register Route]
+1. In the register route, you have the register code.
+2. In register.post, you get the userData from ereq.body
+3. Then we hash the password. The idea is to extract the password from the userData
+4. We then hash the password.
+5. We then create the user and save to the DB with the "create()"
+6. The salt of 10 is used for randomizing the password.
+7. Register is also called signup.
+
+[Login]
+1. There is a router.post for login.
+2. Extract email and password from req.body This is what is required for logging in.
+3. Find the user based on email address
+4. Use status 404 when user was not found. 
+5. We now use the bcrypt compare to compare the passwords
+6. We then use the jwt to create the token.
+7. We also need a private key (encryption key)
+8. At the end we send the token to the client.
+
+[Transaction route]
+1. This is a route we want to protect. So you need to be loggedin
+2. To achieve the protection, a verifyToken function/middleware was added, which comes from the 
+authMiddleware.
+3. This is a local middleware.
+4. A verify middleware function was created under authMiddleware
+5. The Headers of the request that is sent to the backend has the extra info that is sent
+along side the body. The Authorixtion header has the token with a Prefix of Bearer.
+6. Extract the token from the authorization header and then remove Bearer prefix
+7. The private key secret key needs to be the same for both encrution and decryption.
+8. Need to be able to access all data.
+9. {How to view all transactions???}
