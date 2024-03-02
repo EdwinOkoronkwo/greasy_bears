@@ -8,9 +8,10 @@ module.exports = (sequelize, DataTypes) => {
      * This method is not a part of Sequelize lifecycle.
      * The `models/index` file will call this method automatically.
      */
-    static associate({ ItemCategory, Cart, Order, Restaurant }) {
+    static associate({ ItemCategory, Cart, Order, Restaurant, User }) {
       // define association here
       this.belongsTo(ItemCategory);
+      this.belongsTo(User);
       this.belongsTo(Restaurant);
       this.belongsToMany(Order, {
         through: "OrderItem",
@@ -24,7 +25,6 @@ module.exports = (sequelize, DataTypes) => {
     {
       id: {
         type: DataTypes.INTEGER,
-        allowNull: false,
         primaryKey: true,
         autoIncrement: true,
       },
@@ -34,25 +34,14 @@ module.exports = (sequelize, DataTypes) => {
         allowNull: false,
         primaryKey: true,
       },
-      restaurantId: {
-        type: DataTypes.UUID,
-        defaultValue: UUIDV4,
-        allowNull: false,
-        primaryKey: false,
-      },
-      categoryId: {
-        type: DataTypes.UUID,
-        defaultValue: UUIDV4,
-        allowNull: false,
-        primaryKey: false,
-      },
       name: {
         type: DataTypes.STRING,
         allowNull: false,
       },
       cover: {
         type: DataTypes.STRING,
-        allowNull: false,
+        allowNull: true,
+        defaultValue: "",
       },
       description: {
         type: DataTypes.STRING,
@@ -64,19 +53,21 @@ module.exports = (sequelize, DataTypes) => {
       },
       status: {
         type: DataTypes.BOOLEAN,
-        allowNull: false,
+        allowNull: true,
+        defaultValue: true,
       },
       isVeg: {
         type: DataTypes.BOOLEAN,
-        allowNull: false,
+        allowNull: true,
+        defaultValue: true,
       },
       createdAt: {
         type: DataTypes.DATE,
-        allowNull: false,
+        default: new Date(),
       },
       updatedAt: {
         type: DataTypes.DATE,
-        allowNull: false,
+        default: new Date(),
       },
     },
     {

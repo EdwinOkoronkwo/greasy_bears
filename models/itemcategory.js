@@ -8,15 +8,17 @@ module.exports = (sequelize, DataTypes) => {
      * This method is not a part of Sequelize lifecycle.
      * The `models/index` file will call this method automatically.
      */
-    static associate(models) {
+    static associate({ Restaurant, Item, User }) {
       // define association here
+      this.belongsTo(User);
+      this.belongsTo(Restaurant);
+      this.hasMany(Item);
     }
   }
   ItemCategory.init(
     {
       id: {
         type: DataTypes.INTEGER,
-        allowNull: false,
         primaryKey: true,
         autoIncrement: true,
       },
@@ -26,23 +28,17 @@ module.exports = (sequelize, DataTypes) => {
         allowNull: false,
         primaryKey: true,
       },
-      restaurantId: {
-        type: DataTypes.UUID,
-        defaultValue: UUIDV4,
-        allowNull: false,
-        primaryKey: false,
-      },
       name: {
         type: DataTypes.STRING,
         allowNull: false,
       },
       createdAt: {
         type: DataTypes.DATE,
-        allowNull: false,
+        default: new Date(),
       },
       updatedAt: {
         type: DataTypes.DATE,
-        allowNull: false,
+        default: new Date(),
       },
     },
     {

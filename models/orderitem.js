@@ -8,37 +8,23 @@ module.exports = (sequelize, DataTypes) => {
      * This method is not a part of Sequelize lifecycle.
      * The `models/index` file will call this method automatically.
      */
-    static associate({ Order, Item }) {
-      // define association here
-      this.belongsTo(Order);
-      this.belongsTo(Item);
-    }
+    // static associate({ Order, Item }) {
+    //   // define association here
+    //   this.belongsTo(Order);
+    //   this.belongsTo(Item);
+    // }
   }
   OrderItem.init(
     {
       id: {
         type: DataTypes.INTEGER,
-        allowNull: false,
-        primaryKey: true,
         autoIncrement: true,
+        primaryKey: true,
       },
       uuid: {
         type: DataTypes.UUID,
         defaultValue: UUIDV4,
-        allowNull: false,
         primaryKey: true,
-      },
-      orderId: {
-        type: DataTypes.UUID,
-        defaultValue: UUIDV4,
-        allowNull: false,
-        primaryKey: false,
-      },
-      itemId: {
-        type: DataTypes.UUID,
-        defaultValue: UUIDV4,
-        allowNull: false,
-        primaryKey: false,
       },
       quantity: {
         type: DataTypes.INTEGER,
@@ -46,11 +32,13 @@ module.exports = (sequelize, DataTypes) => {
       },
       createdAt: {
         type: DataTypes.DATE,
-        allowNull: false,
+        allowNull: true,
+        default: new Date(),
       },
       updatedAt: {
         type: DataTypes.DATE,
-        allowNull: false,
+        allowNull: true,
+        default: new Date(),
       },
     },
     {

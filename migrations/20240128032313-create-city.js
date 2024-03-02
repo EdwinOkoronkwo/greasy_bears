@@ -6,7 +6,6 @@ module.exports = {
     await queryInterface.createTable("cities", {
       id: {
         type: DataTypes.INTEGER,
-        allowNull: false,
         primaryKey: true,
         autoIncrement: true,
       },
@@ -22,11 +21,11 @@ module.exports = {
       },
       createdAt: {
         type: DataTypes.DATE,
-        allowNull: false,
+        default: new Date(),
       },
       updatedAt: {
         type: DataTypes.DATE,
-        allowNull: false,
+        default: new Date(),
       },
       lat: {
         type: DataTypes.DOUBLE,

@@ -8,13 +8,13 @@ module.exports = (sequelize, DataTypes) => {
      * This method is not a part of Sequelize lifecycle.
      * The `models/index` file will call this method automatically.
      */
-    static associate({ Order, Cart, Address, Restaurant }) {
+    static associate({ Order, Cart, Address, Restaurant, Item, ItemCategory }) {
       // define association here
       this.hasMany(Order);
-      this.hasMany(Cart);
-      this.belongsToMany(Address, {
-        through: "UserAddress",
-      });
+      this.hasMany(ItemCategory);
+      this.hasMany(Item);
+      this.hasOne(Cart);
+      this.hasMany(Address);
       this.belongsToMany(Restaurant, {
         through: "UserRestaurant",
       });
@@ -24,17 +24,24 @@ module.exports = (sequelize, DataTypes) => {
     {
       id: {
         type: DataTypes.INTEGER,
-        allowNull: false,
         primaryKey: true,
         autoIncrement: true,
+        allowNull: false,
       },
       uuid: {
         type: DataTypes.UUID,
         defaultValue: UUIDV4,
-        allowNull: false,
         primaryKey: true,
       },
-      name: {
+      firstName: {
+        type: DataTypes.STRING,
+        allowNull: false,
+      },
+      image: {
+        type: DataTypes.STRING,
+        allowNull: true,
+      },
+      lastName: {
         type: DataTypes.STRING,
         allowNull: false,
       },
@@ -43,29 +50,35 @@ module.exports = (sequelize, DataTypes) => {
         allowNull: false,
         unique: true,
       },
+      password: {
+        type: DataTypes.STRING,
+        allowNull: false,
+      },
+      confirmPassword: {
+        type: DataTypes.STRING,
+        allowNull: false,
+      },
       phone: {
         type: DataTypes.STRING,
         allowNull: false,
       },
       type: {
         type: DataTypes.STRING,
-        allowNull: false,
+        allowNull: true,
+        defaultValue: "user",
       },
       status: {
         type: DataTypes.STRING,
-        allowNull: false,
-      },
-      emailVerified: {
-        type: DataTypes.BOOLEAN,
         allowNull: true,
+        defaultValue: "active",
       },
       createdAt: {
         type: DataTypes.DATE,
-        allowNull: false,
+        default: new Date(),
       },
       updatedAt: {
         type: DataTypes.DATE,
-        allowNull: false,
+        default: new Date(),
       },
     },
     {

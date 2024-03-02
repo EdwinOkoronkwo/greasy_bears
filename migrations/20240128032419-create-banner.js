@@ -6,14 +6,12 @@ module.exports = {
     await queryInterface.createTable("banners", {
       id: {
         type: DataTypes.INTEGER,
-        allowNull: false,
         primaryKey: true,
         autoIncrement: true,
       },
       uuid: {
         type: DataTypes.UUID,
         defaultValue: UUIDV4,
-        allowNull: false,
         primaryKey: true,
       },
       bannerImage: {
@@ -22,15 +20,16 @@ module.exports = {
       },
       status: {
         type: DataTypes.STRING,
-        allowNull: false,
+        allowNull: true,
+        defaultValue: "Active",
       },
       createdAt: {
         type: DataTypes.DATE,
-        allowNull: false,
+        default: new Date(),
       },
       updatedAt: {
         type: DataTypes.DATE,
-        allowNull: false,
+        default: new Date(),
       },
     });
   },

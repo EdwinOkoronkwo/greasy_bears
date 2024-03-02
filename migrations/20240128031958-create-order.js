@@ -6,7 +6,6 @@ module.exports = {
     await queryInterface.createTable("orders", {
       id: {
         type: DataTypes.INTEGER,
-        allowNull: false,
         primaryKey: true,
         autoIncrement: true,
       },
@@ -16,31 +15,30 @@ module.exports = {
         allowNull: false,
         primaryKey: true,
       },
-      userId: {
-        type: DataTypes.UUID,
-        defaultValue: UUIDV4,
-        allowNull: false,
-        primaryKey: false,
-      },
-      restaurantId: {
-        type: DataTypes.UUID,
-        defaultValue: UUIDV4,
-        allowNull: false,
-        primaryKey: false,
-      },
-      address: {
-        type: DataTypes.STRING,
-        allowNull: false,
-      },
+      // userId: {
+      //   type: DataTypes.INTEGER,
+      //   allowNull: false,
+      //   primaryKey: false,
+      // },
+      // restaurantId: {
+      //   type: DataTypes.INTEGER,
+      //   allowNull: false,
+      //   primaryKey: false,
+      // },
+      // address: {
+      //   type: DataTypes.STRING,
+      //   allowNull: false,
+      //   defaultValue: "123 Main Street, Edmonton, AB",
+      // },
 
-      total: {
-        type: DataTypes.DOUBLE,
-        allowNull: false,
-      },
-      grandTotal: {
-        type: DataTypes.DOUBLE,
-        allowNull: false,
-      },
+      // total: {
+      //   type: DataTypes.DOUBLE,
+      //   allowNull: false,
+      // },
+      // grandTotal: {
+      //   type: DataTypes.DOUBLE,
+      //   allowNull: false,
+      // },
       deliveryCharge: {
         type: DataTypes.DOUBLE,
         allowNull: false,
@@ -64,11 +62,11 @@ module.exports = {
       },
       createdAt: {
         type: DataTypes.DATE,
-        allowNull: true,
+        default: new Date(),
       },
       updatedAt: {
         type: DataTypes.DATE,
-        allowNull: true,
+        default: new Date(),
       },
     });
   },

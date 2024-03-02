@@ -6,7 +6,6 @@ module.exports = {
     await queryInterface.createTable("carts", {
       id: {
         type: DataTypes.INTEGER,
-        allowNull: false,
         primaryKey: true,
         autoIncrement: true,
       },
@@ -16,35 +15,34 @@ module.exports = {
         allowNull: false,
         primaryKey: true,
       },
-      userId: {
-        type: DataTypes.UUID,
-        defaultValue: UUIDV4,
-        allowNull: false,
-        primaryKey: false,
-      },
-      totalItems: {
-        type: DataTypes.INTEGER,
-        allowNull: false,
-      },
-      totalPrice: {
-        type: DataTypes.DOUBLE,
-        allowNull: false,
-      },
-      grandTotal: {
-        type: DataTypes.DOUBLE,
-        allowNull: false,
-      },
+      // userId: {
+      //   type: DataTypes.INTEGER,
+      //   allowNull: false,
+      //   primaryKey: false,
+      // },
+      // totalItems: {
+      //   type: DataTypes.INTEGER,
+      //   allowNull: false,
+      // },
+      // totalPrice: {
+      //   type: DataTypes.DOUBLE,
+      //   allowNull: false,
+      // },
+      // grandTotal: {
+      //   type: DataTypes.DOUBLE,
+      //   allowNull: false,
+      // },
       deliveryCharge: {
         type: DataTypes.DOUBLE,
         allowNull: false,
       },
       createdAt: {
-        allowNull: false,
         type: DataTypes.DATE,
+        default: new Date(),
       },
       updatedAt: {
-        allowNull: false,
         type: DataTypes.DATE,
+        default: new Date(),
       },
     });
   },

@@ -169,3 +169,193 @@ along side the body. The Authorixtion header has the token with a Prefix of Bear
 7. The private key secret key needs to be the same for both encrution and decryption.
 8. Need to be able to access all data.
 9. {How to view all transactions???}
+
+
+
+########################################
+1. CanActivate is added to the Routes: AuthGuardService is created
+2. Created login, register and transaction routes
+3. We have iTransaction, iUser
+4. In register component. We create the HTML. Reactive form. 
+5. A formbuilder was used to create the form builder.\
+6. A createUser is provided by the Register service
+7. For login, we have to save the token to the web browser local storage
+
+#########################################################
+1. Images are stored under assets in Angular
+2. The uploaded images. These are stored in the backend in the uploads folder
+3. In the databse is the image column, which has the file name of the image.
+
+
+###################################################################################
+
+[User Authentication]
+######################################################################################
+
+[Backend]
+1. Typically email and password are used for authentication
+2. Token based authentication is what we are going to be using.
+3. So if I have a route that I only want logged in users to access. The user is provided with a 
+token when they log in. So with the token you can access the application and the resources.
+4. The user table has email, passowrd, first name, last name extract
+5. The password is encrypted in the table.
+6. Confirmed pasword is not being saved. {Should it be part of the model??}
+7. The email is marked as unique.
+8. When I try to access a protected route I get {Access denied - status code 401}
+9. The register route is used for creating a new account
+10. There is an auth/login route.
+11. After logging a user receives a token.
+12. jsonwebtoken is for creating the token.
+13. brcrypt is for the hashing/encryption
+14. A user table was created. A Transaction table was also created.
+15. An auth routers and transaction routers.
+16. Login and register were defined in the Auth routh
+17. Only the get route was created for the transacion
+
+[Register]
+1. Get the userData from req.body. This is the posted data during registering
+2. pass the password prperty of the userData to bcrypt with 10 (salt) and hash as the call back.
+3. Assign the hash to the userFData password.
+4. Create new user with the updated userData (containing hashed password)
+
+[Login]
+1. Extract email and password from req.body
+2. Find user based on email with {findOne} where...
+3. If no user is found then error 404.
+4. If the email is found then use bcryot to compare passwords from the body with password of the 
+found user.
+5. If no match then Authentication failed
+6. If there is a match then a token is generated 
+7. The token is returned as an object {res.status(200).send({token})}?????
+
+[Transaction Route]
+1. A local middle ware was added 
+2. This was written to return the transactions for a particular user because we have the 
+where clause {findAll where user_id = user_id}.
+3. To pull all transactions another route can be created without the filter
+
+[User route]
+1. This is the {profile} route
+2. Get userId from req.userId
+3. Use findByPK(userId) to retrieve the user.
+4. This route returns the user/profile info
+5. The user route can be used to implement edit profile etc
+
+
+[Protection middleware]
+1. Get token from req.header("Authorization")
+2. If the token is found then replace "Bearer " with ""
+3. If no token then return 401 status
+4. If token then decoded is the result of comparing jwt.compare with token and your secret
+5. Compare the userId with the decoded userId
+6. Call next 
+
+[Frontend]
+1. Accessing the transactions in the frontend page forces me to login because the transactions 
+page is a protected page.
+2. when I log in then I can move to the transaction page and can see the transactions
+3. The token needs to be saved on the browser. The local storage is being used in Application 
+under local storage.
+4. If the content of the local storage is deleted then we are logged out.
+5. Three routes were defined: login, register and transactions. These routes had their respective 
+components
+6. The {canActivate} Guard was added to the transaction component. 
+7. CanActivate provides the protection for the transaction page. The {AuthGuard} service returns 
+true or false if we can access the transactions page.
+8. Two interfaces have been defined: iTransaction and iUser
+
+[Register Component]
+1. This is reactive forms
+2. A form builder was used to create the reactuve form
+3. When the register button is clicked, the data from the form is passed to the userService
+which has a createUser method.
+4. A subscription is setup to receive the response from the createUser method.
+5. If successful the the user is navigated to login page
+6. If error then an alert is raised.
+7. The {createUser} methid in the userService simply makes an http post request to "auth/register"
+route of the backend with the formData
+
+[Login Component]
+1. This is a reactive form with email and password input fields.
+2.. A login method is triggered upon submission
+3. A formbuilder is used to create the form.
+4. When a login is clicked the login method is called from the userSevice. 
+5. The loginUser method in user service makes a post request to "auth/login" route of the 
+backend. The backend services then provides the token object. The token object with type 
+any is received back friom the backend
+6 If the call to the backend was successful, the data is saved to the local storage using the 
+{localStorage.setItem()}. 
+7. The object is then named "auth_token" and the token is then stored in the local storage in the 
+Application tab of the browser.
+8. localStorage is from the browser.
+9. Cookies are another option that allows to add expiration from the frontend. Another option is 
+session, which expires once you close the browser/web page.
+10. A subscription is made to receive the result from the backend
+11. The user is redirected to the transaction page
+
+[Transaction]
+1. A Guard service is assigned to the transaction {canActivate}
+
+[AuthGuardService]
+1. This service has a method called {canActivate}
+2. It checks if {this.userService.getToken()} is falsy. If falsy then redirected to login.
+3. If not falsy then true is returned.
+4. The {getToken()} method of the userService simply calls the getItem() function of the 
+localStorage to get the token from the browser local storage
+
+[Transaction ]
+1. The HTML allows us to display the attributes of the transaction
+2. The constructor calls the getTransactions method of the transaction service which is subscribed
+to to get the transactions
+3. getTransactions simply makes a call to the backend to get all transactions and returns an 
+array of all transactions
+4. {How is the token applied to the call to the backend???} because you need to attach the token to 
+the request since it is a protected route. There is no trace of the token in the call to the backend.
+5. For that we need the {Token Interceptor}
+
+[authInterceptor (TokenInterceptor)]
+1. This function intercepts the communciation to the backend and modifies it before it gets 
+to the backend.
+2. The authInterceptor gets the token from the userService {getToken()} method.
+if there is a token, we clone the request and add an authorization header that has the token as 
+a value to it and then send the cloned request to the backend
+3. It then passes on the token in the next function.
+4. since this a file and not a class we need to inject the user Service into it with the 
+{inject} method. The inject method is used to inject into a file
+5. The {authInterceptot} method is registered in the app.config file 
+6. A {withInterceptor}  function is used to wrap an array containing the {authInterceptor} method, 
+which is then added as an arguent of the provideHttpClient function.
+7. The interceptor now adds a token to every call made to the backend automatically.
+
+
+
+
+########################################################################################
+
+[Cart]
+1. Each product is a card and has two buttons: View detail and Add to Cart
+1. When I click on the AddToCart button
+
+const formData = require("express-form-data");
+const express = require("express");
+const os = require("os");
+const app = express();
+
+/**
+ * Options are the same as multiparty takes.
+ * But there is a new option "autoClean" to clean all files in "uploadDir" folder after the response.
+ * By default, it is "false".
+ */
+const options = {
+  uploadDir: os.tmpdir(),
+  autoClean: true
+};
+
+// parse data with connect-multiparty. 
+app.use(formData.parse(options));
+// delete from the request all empty files (size == 0)
+app.use(formData.format());
+// change the file objects to fs.ReadStream 
+app.use(formData.stream());
+// union the body and the files
+app.use(formData.union());

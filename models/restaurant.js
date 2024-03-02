@@ -8,38 +8,33 @@ module.exports = (sequelize, DataTypes) => {
      * This method is not a part of Sequelize lifecycle.
      * The `models/index` file will call this method automatically.
      */
-    static associate({ City, User, Order }) {
+    static associate({ City, User, Item, Banner, ItemCategory }) {
       // define association here
       this.belongsTo(City);
       this.belongsToMany(User, {
         through: "UserRestaurants",
       });
-      this.hasMany(Order);
+      this.hasMany(Item);
+      this.hasMany(Banner);
+      this.hasMany(ItemCategory);
     }
   }
   Restaurant.init(
     {
       id: {
         type: DataTypes.INTEGER,
-        allowNull: false,
         primaryKey: true,
         autoIncrement: true,
       },
       uuid: {
         type: DataTypes.UUID,
         defaultValue: UUIDV4,
-        allowNull: false,
         primaryKey: true,
-      },
-      userId: {
-        type: DataTypes.UUID,
-        defaultValue: UUIDV4,
-        allowNull: false,
-        primaryKey: false,
       },
       cover: {
         type: DataTypes.STRING,
-        allowNull: false,
+        allowNull: true,
+        defaultValue: "",
       },
       name: {
         type: DataTypes.STRING,
@@ -47,18 +42,19 @@ module.exports = (sequelize, DataTypes) => {
       },
       cuisines: {
         type: DataTypes.STRING,
-        allowNull: false,
+        allowNull: true,
       },
       rating: {
-        type: DataTypes.NUMBER,
-        allowNull: false,
+        type: DataTypes.DOUBLE,
+        allowNull: true,
+        defaultValue: 4,
       },
       deliveryTime: {
-        type: DataTypes.NUMBER,
+        type: DataTypes.DOUBLE,
         allowNull: false,
       },
       price: {
-        type: DataTypes.NUMBER,
+        type: DataTypes.DOUBLE,
         allowNull: false,
       },
       phone: {
@@ -72,6 +68,7 @@ module.exports = (sequelize, DataTypes) => {
       isClose: {
         type: DataTypes.BOOLEAN,
         allowNull: true,
+        defaultValue: true,
       },
       description: {
         type: DataTypes.STRING,
@@ -85,45 +82,46 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.STRING,
         allowNull: true,
       },
-      cityId: {
-        type: DataTypes.STRING,
-        allowNull: true,
-      },
-      address: {
+      restaurantAddress: {
         type: DataTypes.STRING,
         allowNull: true,
       },
       distance: {
         type: DataTypes.STRING,
         allowNull: true,
+        defaultValue: 5,
       },
       location: {
         type: DataTypes.STRING,
         allowNull: true,
+        defaultValue: "",
       },
       status: {
         type: DataTypes.STRING,
         allowNull: true,
       },
-      totalRating: {
-        type: DataTypes.NUMBER,
+      postalCode: {
+        type: DataTypes.STRING,
         allowNull: true,
+        defaultValue: "T6W",
       },
-      created_at: {
+      createdAt: {
         type: DataTypes.DATE,
-        allowNull: true,
+        default: new Date(),
       },
-      updated_at: {
+      updatedAt: {
         type: DataTypes.DATE,
-        allowNull: true,
+        default: new Date(),
       },
       latitude: {
         type: DataTypes.DOUBLE,
         allowNull: true,
+        defaultValue: 53,
       },
       longitude: {
         type: DataTypes.DOUBLE,
         allowNull: true,
+        defaultValue: -113,
       },
     },
     {
@@ -131,5 +129,25 @@ module.exports = (sequelize, DataTypes) => {
       modelName: "Restaurant",
     }
   );
+
+  Restaurant.addScope(
+    "distance",
+    (latitude, longitude, distance, unit = "km") => {
+      const constant = unit == "km" ? 6371 : 3959;
+      const haversine = `(
+        ${constant} * acos(
+            cos(radians(${latitude}))
+            * cos(radians(latitude))
+            * cos(radians(longitude) - radians(${longitude}))
+            + sin(radians(${latitude})) * sin(radians(latitude))
+        )
+    )`;
+      return {
+        attributes: [[sequelize.literal(haversine), "distance"]],
+        having: sequelize.literal(`distance <= ${distance}`),
+      };
+    }
+  );
+
   return Restaurant;
 };

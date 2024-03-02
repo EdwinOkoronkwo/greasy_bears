@@ -6,51 +6,43 @@ module.exports = {
     await queryInterface.createTable("addresses", {
       id: {
         type: DataTypes.INTEGER,
-        allowNull: false,
         primaryKey: true,
         autoIncrement: true,
       },
       uuid: {
         type: DataTypes.UUID,
         defaultValue: UUIDV4,
-        allowNull: false,
         primaryKey: true,
       },
-      userId: {
-        type: DataTypes.UUID,
-        defaultValue: UUIDV4,
-        allowNull: false,
-        primaryKey: false,
-      },
+
       title: {
         type: DataTypes.STRING,
-
-        allowNull: false,
+        allowNull: true,
+        defaultValue: "",
       },
       landmark: {
         type: DataTypes.STRING,
-
-        allowNull: false,
+        allowNull: true,
+        defaultValue: "",
       },
       address: {
         type: DataTypes.STRING,
-
-        allowNull: false,
+        allowNull: true,
+        defaultValue: "",
       },
       houseNumber: {
         type: DataTypes.STRING,
 
-        allowNull: false,
+        allowNull: true,
+        defaultValue: "",
       },
       createdAt: {
         type: DataTypes.DATE,
-
-        allowNull: true,
+        default: new Date(),
       },
       updatedAt: {
         type: DataTypes.DATE,
-
-        allowNull: true,
+        default: new Date(),
       },
       lat: {
         type: DataTypes.DOUBLE,

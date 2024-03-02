@@ -8,10 +8,11 @@ module.exports = (sequelize, DataTypes) => {
      * This method is not a part of Sequelize lifecycle.
      * The `models/index` file will call this method automatically.
      */
-    static associate({ Restaurant, User, Item }) {
+    static associate({ Restaurant, User, Item, Address }) {
       // define association here
       this.belongsTo(Restaurant);
       this.belongsTo(User);
+      this.hasOne(Address);
       this.belongsToMany(Item, {
         through: "OrderItem",
       });
@@ -21,69 +22,59 @@ module.exports = (sequelize, DataTypes) => {
     {
       id: {
         type: DataTypes.INTEGER,
-        allowNull: false,
         primaryKey: true,
         autoIncrement: true,
       },
       uuid: {
         type: DataTypes.UUID,
         defaultValue: UUIDV4,
-        allowNull: false,
         primaryKey: true,
       },
-      userId: {
-        type: DataTypes.UUID,
-        defaultValue: UUIDV4,
-        allowNull: false,
-        primaryKey: false,
-      },
-      restaurantId: {
-        type: DataTypes.UUID,
-        defaultValue: UUIDV4,
-        allowNull: false,
-        primaryKey: false,
-      },
-      address: {
-        type: DataTypes.STRING,
-        allowNull: false,
-      },
+      // address: {
+      //   type: DataTypes.STRING,
+      //   allowNull: true,
+      //   defaultValue: "123 Main Street, Edmonton, AB",
+      // },
 
-      total: {
-        type: DataTypes.DOUBLE,
-        allowNull: false,
-      },
-      grandTotal: {
-        type: DataTypes.DOUBLE,
-        allowNull: false,
-      },
-      deliveryCharge: {
-        type: DataTypes.DOUBLE,
-        allowNull: false,
-      },
+      // total: {
+      //   type: DataTypes.DOUBLE,
+      //   allowNull: false,
+      // },
+      // grandTotal: {
+      //   type: DataTypes.DOUBLE,
+      //   allowNull: false,
+      // },
+      // deliveryCharge: {
+      //   type: DataTypes.DOUBLE,
+      //   allowNull: false,
+      // },
       status: {
         type: DataTypes.STRING,
-        allowNull: false,
+        allowNull: true,
+        defaultValue: "Complete",
       },
       paymentStatus: {
         type: DataTypes.STRING,
         allowNull: true,
+        defaultValue: "Paid",
       },
       paymentMode: {
         type: DataTypes.STRING,
         allowNull: true,
+        defaultValue: "Debit",
       },
-
       instruction: {
         type: DataTypes.STRING,
         allowNull: true,
+        defaultValue: "Drop items at doorstep",
       },
       createdAt: {
         type: DataTypes.DATE,
-        allowNull: true,
+        default: new Date(),
       },
       updatedAt: {
         type: DataTypes.DATE,
-        allowNull: true,
+        default: new Date(),
       },
     },
     {

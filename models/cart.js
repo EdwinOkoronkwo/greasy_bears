@@ -20,37 +20,38 @@ module.exports = (sequelize, DataTypes) => {
     {
       id: {
         type: DataTypes.INTEGER,
-        allowNull: false,
         primaryKey: true,
         autoIncrement: true,
       },
       uuid: {
         type: DataTypes.UUID,
         defaultValue: UUIDV4,
-        allowNull: false,
         primaryKey: true,
       },
-      userId: {
-        type: DataTypes.UUID,
-        defaultValue: UUIDV4,
-        allowNull: false,
-        primaryKey: false,
-      },
-      totalItems: {
-        type: DataTypes.INTEGER,
-        allowNull: false,
-      },
-      totalPrice: {
-        type: DataTypes.DOUBLE,
-        allowNull: false,
-      },
-      grandTotal: {
-        type: DataTypes.DOUBLE,
-        allowNull: false,
-      },
+      // totalItems: {
+      //   type: DataTypes.INTEGER,
+      //   allowNull: false,
+      // },
+      // totalPrice: {
+      //   type: DataTypes.DOUBLE,
+      //   allowNull: false,
+      // },
+      // grandTotal: {
+      //   type: DataTypes.DOUBLE,
+      //   allowNull: false,
+      // },
       deliveryCharge: {
         type: DataTypes.DOUBLE,
-        allowNull: false,
+        allowNull: true,
+        defaultValue: 10,
+      },
+      createdAt: {
+        type: DataTypes.DATE,
+        default: new Date(),
+      },
+      updatedAt: {
+        type: DataTypes.DATE,
+        default: new Date(),
       },
     },
     {

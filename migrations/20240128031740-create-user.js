@@ -6,17 +6,23 @@ module.exports = {
     await queryInterface.createTable("users", {
       id: {
         type: DataTypes.INTEGER,
-        allowNull: false,
         primaryKey: true,
         autoIncrement: true,
       },
       uuid: {
         type: DataTypes.UUID,
         defaultValue: UUIDV4,
-        allowNull: false,
         primaryKey: true,
       },
-      name: {
+      firstName: {
+        type: DataTypes.STRING,
+        allowNull: false,
+      },
+      image: {
+        type: DataTypes.STRING,
+        allowNull: true,
+      },
+      lastName: {
         type: DataTypes.STRING,
         allowNull: false,
       },
@@ -25,29 +31,35 @@ module.exports = {
         allowNull: false,
         unique: true,
       },
+      password: {
+        type: DataTypes.STRING,
+        allowNull: false,
+      },
+      confirmPassword: {
+        type: DataTypes.STRING,
+        allowNull: false,
+      },
       phone: {
         type: DataTypes.STRING,
         allowNull: false,
       },
       type: {
         type: DataTypes.STRING,
-        allowNull: false,
+        allowNull: true,
+        defaultValue: "user",
       },
       status: {
         type: DataTypes.STRING,
-        allowNull: false,
-      },
-      emailVerified: {
-        type: DataTypes.BOOLEAN,
         allowNull: true,
+        defaultValue: "active",
       },
       createdAt: {
-        allowNull: false,
         type: DataTypes.DATE,
+        default: new Date(),
       },
       updatedAt: {
-        allowNull: false,
         type: DataTypes.DATE,
+        default: new Date(),
       },
     });
   },

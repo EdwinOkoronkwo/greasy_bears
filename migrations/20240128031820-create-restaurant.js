@@ -6,25 +6,18 @@ module.exports = {
     await queryInterface.createTable("restaurants", {
       id: {
         type: DataTypes.INTEGER,
-        allowNull: false,
         primaryKey: true,
         autoIncrement: true,
       },
       uuid: {
         type: DataTypes.UUID,
         defaultValue: UUIDV4,
-        allowNull: false,
         primaryKey: true,
-      },
-      userId: {
-        type: DataTypes.UUID,
-        defaultValue: UUIDV4,
-        allowNull: false,
-        primaryKey: false,
       },
       cover: {
         type: DataTypes.STRING,
-        allowNull: false,
+        allowNull: true,
+        defaultValue: "",
       },
       name: {
         type: DataTypes.STRING,
@@ -32,11 +25,12 @@ module.exports = {
       },
       cuisines: {
         type: DataTypes.STRING,
-        allowNull: false,
+        allowNull: true,
       },
       rating: {
         type: DataTypes.DOUBLE,
-        allowNull: false,
+        allowNull: true,
+        defaultValue: 4,
       },
       deliveryTime: {
         type: DataTypes.DOUBLE,
@@ -57,6 +51,7 @@ module.exports = {
       isClose: {
         type: DataTypes.BOOLEAN,
         allowNull: true,
+        defaultValue: true,
       },
       description: {
         type: DataTypes.STRING,
@@ -70,45 +65,47 @@ module.exports = {
         type: DataTypes.STRING,
         allowNull: true,
       },
-      cityId: {
-        type: DataTypes.STRING,
-        allowNull: true,
-      },
-      address: {
+
+      restaurantAddress: {
         type: DataTypes.STRING,
         allowNull: true,
       },
       distance: {
         type: DataTypes.STRING,
         allowNull: true,
+        defaultValue: 5,
       },
       location: {
         type: DataTypes.STRING,
         allowNull: true,
+        defaultValue: "",
       },
       status: {
         type: DataTypes.STRING,
         allowNull: true,
       },
-      totalRating: {
-        type: DataTypes.DOUBLE,
+      postalCode: {
+        type: DataTypes.STRING,
         allowNull: true,
+        defaultValue: "T6W",
       },
-      created_at: {
+      createdAt: {
         type: DataTypes.DATE,
-        allowNull: true,
+        default: new Date(),
       },
-      updated_at: {
+      updatedAt: {
         type: DataTypes.DATE,
-        allowNull: true,
+        default: new Date(),
       },
       latitude: {
         type: DataTypes.DOUBLE,
         allowNull: true,
+        defaultValue: 53,
       },
       longitude: {
         type: DataTypes.DOUBLE,
         allowNull: true,
+        defaultValue: -113,
       },
     });
   },

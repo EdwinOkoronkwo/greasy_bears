@@ -6,27 +6,13 @@ module.exports = {
     await queryInterface.createTable("items", {
       id: {
         type: DataTypes.INTEGER,
-        allowNull: false,
         primaryKey: true,
         autoIncrement: true,
       },
       uuid: {
         type: DataTypes.UUID,
         defaultValue: UUIDV4,
-        allowNull: false,
         primaryKey: true,
-      },
-      restaurantId: {
-        type: DataTypes.UUID,
-        defaultValue: UUIDV4,
-        allowNull: false,
-        primaryKey: false,
-      },
-      categoryId: {
-        type: DataTypes.UUID,
-        defaultValue: UUIDV4,
-        allowNull: false,
-        primaryKey: false,
       },
       name: {
         type: DataTypes.STRING,
@@ -46,19 +32,21 @@ module.exports = {
       },
       status: {
         type: DataTypes.BOOLEAN,
-        allowNull: false,
+        allowNull: true,
+        defaultValue: true,
       },
       isVeg: {
         type: DataTypes.BOOLEAN,
-        allowNull: false,
+        allowNull: true,
+        defaultValue: true,
       },
       createdAt: {
         type: DataTypes.DATE,
-        allowNull: false,
+        default: new Date(),
       },
       updatedAt: {
         type: DataTypes.DATE,
-        allowNull: false,
+        default: new Date(),
       },
     });
   },

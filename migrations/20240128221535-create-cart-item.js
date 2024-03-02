@@ -6,39 +6,25 @@ module.exports = {
     await queryInterface.createTable("cartItems", {
       id: {
         type: DataTypes.INTEGER,
-        allowNull: false,
-        primaryKey: true,
         autoIncrement: true,
+        primaryKey: true,
       },
       uuid: {
         type: DataTypes.UUID,
         defaultValue: UUIDV4,
-        allowNull: false,
         primaryKey: true,
-      },
-      cartId: {
-        type: DataTypes.UUID,
-        defaultValue: UUIDV4,
-        allowNull: false,
-        primaryKey: false,
-      },
-      itemId: {
-        type: DataTypes.UUID,
-        defaultValue: UUIDV4,
-        allowNull: false,
-        primaryKey: false,
       },
       quantity: {
         type: DataTypes.INTEGER,
         allowNull: false,
       },
       createdAt: {
-        allowNull: false,
         type: DataTypes.DATE,
+        default: new Date(),
       },
       updatedAt: {
-        allowNull: false,
         type: DataTypes.DATE,
+        default: new Date(),
       },
     });
   },
