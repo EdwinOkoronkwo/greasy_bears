@@ -76,22 +76,23 @@ exports.updateItem = async (req, res) => {
     itemCategoryId,
   } = req.body;
   try {
-    //const item = await req.user.getItems({ where: { id } });
-    const item = await Item.findOne({ where: { id } });
+    const item = await Item.findByPk(id);
     console.log("item: ", item);
-    item.restaurantId = restaurantId;
-    item.cover = cover;
-    item.name = name;
-    item.description = description;
-    item.price = price;
-    item.isVeg = isVeg;
-    item.itemCategoryId = itemCategoryId;
-    item.status = status;
-    item.createdAt = createdAt;
-    item.updatedAt = updatedAt;
-    await item.save();
-    console.log(item);
-    return res.json(item);
+    const updatedItem = await item.update({
+      restaurantId,
+      cover,
+      name,
+      description,
+      price,
+      isVeg,
+      itemCategoryId,
+      status,
+      createdAt,
+      updatedAt,
+    });
+    await updatedItem.save();
+    console.log(updatedItem);
+    return res.json(this.updateItem);
   } catch (err) {
     console.log(err);
     return res.status(500).json({ error: "Something went wrong" });

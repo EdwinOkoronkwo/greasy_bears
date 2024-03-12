@@ -78,14 +78,16 @@ exports.profile = async (req, res) => {
 exports.updateProfile = async (req, res) => {
   const userId = req.user.id;
   const { phone } = req.body;
+  if (!req.file) {
+    return res.status(500).json({ error: "Please provide image" });
+  }
+  const image = req.file.filename;
+
   try {
-    const updatedProfile = await User.findOne({
+    const profile = await User.findOne({
       where: { id: userId },
     });
-    if (req.file) {
-      updatedProfile.image = req.file.filename;
-    }
-    updatedProfile.phone = phone;
+    const updatedProfile = await profile.update({ phone, image });
     await updatedProfile.save();
     console.log(updatedProfile);
     return res.json(updatedProfile);

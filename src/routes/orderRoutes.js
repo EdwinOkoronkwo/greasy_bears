@@ -10,7 +10,7 @@ router.route("/ordersPrice").get(orderController.getOrdersPrice);
 router.route("/ordersQuantity").get(orderController.getOrdersQuantity);
 
 router.route("/").get(orderController.getOrders).post(
-  // authController.protect,
+  //authController.protect,
   //   orderValidator.createOrder(),
   orderController.createOrder
 );

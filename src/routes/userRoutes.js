@@ -26,11 +26,7 @@ router.post("/signup", upload.single("profile_image"), authController.signup);
 router.post("/login", authController.login);
 
 // User
-router.get(
-  "/profile",
-  // authController.protect,
-  userController.profile
-);
+router.get("/profile", authController.protect, userController.profile);
 
 router.route("/").get(userController.getUsers).post(
   // userController.checkBody,
